@@ -1,3 +1,5 @@
+# Token Key
+# 4cc8379df0f222433242858faa96698eff5e6277
 pipeline {
   agent any
   tools { 
@@ -6,7 +8,7 @@ pipeline {
    stages{
     stage('CompileandRunSonarAnalysis') {
             steps {	
-sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=toddbuggywebapptest -Dsonar.organization=toddbuggywebapptest -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=bc99d821e75b7738ca1c3a37d0d5e069dbbccd67'			}
+sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=testbuggywebtoken -Dsonar.organization=Jenkins-Test-buggyapp -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=4cc8379df0f222433242858faa96698eff5e6277'			}
         } 
   }
 }
