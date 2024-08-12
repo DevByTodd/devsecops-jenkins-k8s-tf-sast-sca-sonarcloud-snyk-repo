@@ -18,4 +18,3 @@ sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=testbuggywebtoken -Dsonar.or
 			}
     }		
   }
-}
