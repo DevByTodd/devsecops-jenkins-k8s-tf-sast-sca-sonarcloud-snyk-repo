@@ -1,3 +1,15 @@
+You are a DevSecOps engineer and you have been tasked with creating a Jenkinsfile for performing SAST scan on a Java web application using SonarCloud. The Jenkinsfile should include the following stages:
+
+Checkout: Checkout the source code from a Git repository "https://github.com/your-repo/your-node-app.git".
+Build: Build the Java application using the "mvn install" command.
+Test: Run unit tests on the Node.js application using the "mvn test" command.
+SAST scan: Run SAST scan using SonarCloud with the below values:
+Sonar URL = https://sonarcloud.io/
+Sonar Org = asgbuggywebapp
+Sonar ProjectKey = asgbuggywebapp
+Sonar Login = 93f470b908a46156f5844
+
+#####
 pipeline {
   agent any
   tools { 
@@ -9,4 +21,32 @@ pipeline {
 sh 'mvn clean verify sonar:sonar -Dsonar.pullrequest.provider=GitHub -Dsonar.pullrequest.github.repository=https://github.com/your-repo/your-node-app.git -Dsonar.projectKey=asgbuggywebapp -Dsonar.organization=asgbuggywebapp -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=93f470b908a46156f5844'			}
         } 
   }
+}
+######
+
+# Answer
+pipeline {
+    agent any
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/your-repo/your-node-app.git'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'mvn install'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('SAST Scan') {
+            steps {
+                sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=asgbuggywebapp -Dsonar.organization=asgbuggywebapp -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=93f470b908a46156f5844'
+            }
+        }
+    }
 }
