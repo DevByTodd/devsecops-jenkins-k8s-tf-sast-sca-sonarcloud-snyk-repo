@@ -1,0 +1,40 @@
+You are a DevSecOps engineer and you have been tasked with creating a Jenkinsfile for performing DAST scan on a Java web application using OWASP ZAP. The Jenkinsfile should include the following stages:
+Checkout: Checkout the source code from a Git repository "https://github.com/your-repo/your-node-app.git".
+Build: Build the Java application using the "mvn install" command.
+Test: Run unit tests on the Node.js application using the "mvn test" command.
+DAST scan: Run DAST scan using ZAP. DAST scan should be run in command line and progress should be visible in logs. Also, DAST scan report should be archived. Use the below values for writing the script for this stage.
+      ZAP Location = zap.sh
+      Application URL = https:// www.example.com
+      ZAP Report name = zap_report.html
+
+	
+
+pipeline {
+    agent any
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/your-repo/your-node-app.git'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'mvn install'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('RunDASTUsingZAP') {
+          steps {
+		        withKubeConfig([credentialsId: 'kubelogin']) {
+				sh('zap.sh -cmd -quickurl https://www.example.com -quickprogress -quickout ${WORKSPACE}/zap_report.html')
+				archiveArtifacts artifacts: 'zap_report.html'
+		        }
+	       }  
+       }
+
+        }
+      }    
