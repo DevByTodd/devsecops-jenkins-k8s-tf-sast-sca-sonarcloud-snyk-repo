@@ -9,3 +9,28 @@ Test: Run unit tests on the Node.js application using the "mvn test" command.
 
 SCA scan: Run SCA scan using Snyk. Credentials are stored in Jenkins credential manager. Use "SNYK_TOKEN" as credentialsId and variable name for passing the credentials to the stage. Make sure that Snyk FAILS the build if security vulnerabilities are identified in third party libraries.
 
+pipeline {
+    agent any
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/your-repo/your-node-app.git'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'mvn install'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('SAST Scan') {
+            steps {
+                sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=asgbuggywebapp -Dsonar.organization=asgbuggywebapp -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=93f470b908a46156f5844'
+            }
+        }
+    }
+}
